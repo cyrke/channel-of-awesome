@@ -20,6 +20,6 @@ var playlists = {
   ]
 }
 ```
-Then, view the channel by going to http://dfcb.github.com/channel-of-awesome/index.html#cats
+Then, view the channel by going to index.html#cats
 
-Or, the quicker, easier way is to just put a comma-delineated playlist in the hash index.html#youtube:wf_IIbT8HGk,youtube:plWnm7UpsXk,vimeo:23608259
+Or, the quicker, easier way is to just put a comma-delineated playlist in the hash http://dfcb.github.com/channel-of-awesome/index.html#youtube:wf_IIbT8HGk,youtube:plWnm7UpsXk,vimeo:23608259
