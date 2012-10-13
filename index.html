@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Channel of Awesome</title>
+        <style>
+        	body { background:#000;margin:0; padding: 0; overflow: hidden; }
+          .wrapper { width:100%; height:100%; }
+          .hide { display: none; }
+        </style>
+    </head>
+    <body>
+      <div class="wrapper">
+        <div id="yt-player-contain" class="hide"></div>
+        <div id="v-player-contain" class="hide"></div>
+      </div>
+      <script src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+      <script src="//www.youtube.com/iframe_api"></script>
+      <script src="http://a.vimeocdn.com/js/froogaloop2.min.js?462b5-1349886067"></script>
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-34145020-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
+
+      <script>
+
+        // add arrays to playlists for different awesome channels
+        // for example, add cats:[...] then load it by going to index.html#cats
+
+        var playlists = {
+          tech:[
+            'youtube:c3-wIICjAhE',
+            'youtube:Llmq2hYWXHo',
+            'vimeo:31946199',
+            'vimeo:46857169',
+            'youtube:6vN57XseOpw',
+            'vimeo:44369414:20',
+            'youtube:HlPrOypwt-w',
+            'youtube:gvd95Z6AiuM',
+            'youtube:H5yT9FL-2v4',
+            'youtube:YvbAqw0sk6M',
+            'vimeo:47095462',
+            'vimeo:8525186:24',
+            'youtube:rZslQZ6iMgA',
+            'vimeo:45417241',
+            'youtube:DRRu5dKRfTU',
+            'youtube:JXmBrD4b4EI',
+            'youtube:cseTX_rW3uM',
+            'youtube:tu0TRA6a21Q',
+            'vimeo:48362240',
+            'youtube:Y7-UjTKygO0',
+            'youtube:PlHUOHr4WxA',
+            'youtube:akA-B64RACU',
+            'vimeo:34824490',
+            'youtube:_uTJiEYI1ik',
+            'vimeo:42846180:63',
+            'youtube:_d6KuiuteIA',
+            'youtube:NDqNqF15SWs',
+            'vimeo:2229299',
+            'vimeo:44904580:20',
+            'vimeo:28176347:630',
+            'youtube:O2udM5dGT-w',
+            'youtube:58dsqozft3k',
+            'youtube:2hASOre63Nk',
+            'youtube:E-pyay3v3Qo',
+            'youtube:XLKKbz2mNyo',
+            'vimeo:44464000',
+            'vimeo:30780208',
+            'vimeo:2177723',
+            'vimeo:45276780',
+            'youtube:3TOrj-GadtU'
+          ]
+        }
+        
+        // get playlist id or array from hash, if it isn't valid use default, then randomize
+        var defaultPlaylist = 'tech';
+        var playlist;
+        if (location.hash === '') {
+          playlist = playlists[defaultPlaylist];
+        } else if (location.hash.indexOf(',') !== -1) {
+          playlist = location.hash.split(',');
+        } else {
+          playlist = playlists[location.hash] || playlists[defaultPlaylist];
+        }
+        playlist.sort(function() { return 0.5 - Math.random() });
+
+        var ytPlayer, 
+            vPlayer, 
+            vidIndex = 0;
+        
+        function addEvent(element, eventName, callback) {
+            if (element.addEventListener) {
+                element.addEventListener(eventName, callback, false);
+            }
+            else {
+                element.attachEvent('on' + eventName, callback);
+            }
+        }
+
+        function onYouTubeIframeAPIReady() {
+          ytPlayer = new YT.Player('yt-player-contain', {
+            height: '100%',
+            width: '100%',
+            playerVars: {
+              controls:0,
+              showinfo:0
+            },
+            events: {
+              'onReady': onYTPlayerReady,
+              'onStateChange': onYTPlayerStateChange
+            }
+          });
+        }
+
+        function onYTPlayerReady(e) {
+          playNextVideo();
+        }
+
+        function playNextVideo() {
+          var ytPlayerContainer = document.getElementById('yt-player-contain')
+          var vPlayerContainer = document.getElementById('v-player-contain')
+
+          // get next video from playlist
+          var video = playlist[vidIndex].split(':');
+          // increment video playlist index
+          vidIndex = (vidIndex === playlist.length) ? 0 : vidIndex+1;
+
+          // get video data 
+          var service = video[0];
+          var id = video[1];
+          var startTime = (video[2] === undefined) ? 0 : video[2];
+
+          // track video view
+          _gaq.push(['_trackPageview', '/'+service+'/'+id]);
+
+          // update player with new video
+          if (service === 'youtube') {
+            
+            // hide vimeo
+            vPlayerContainer.className = 'hide';
+            vPlayerContainer.innerHTML = '';
+            
+            // show/load/play video
+            ytPlayerContainer.className = '';
+            ytPlayer.loadVideoById(id, startTime);
+          }
+          else if (service === 'vimeo') {
+            // hide youtube
+            ytPlayerContainer.className = 'hide';
+            
+            // show/load/play vimeo
+            vPlayerContainer.className = '';
+            vPlayerContainer.innerHTML = '<iframe id="v-player" src="http://player.vimeo.com/video/'+id+'?api=1&player_id=v-player&autoplay=1&title=0&byline=0&portrait=0&api=1" width="100%" height="100%" frameborder="0" webkitallowfullscreen allowfullscreen></iframe>';
+
+            vPlayer = document.getElementById('v-player');
+            $f(vPlayer).addEvent('ready', function(playerID) {
+              vPlayer = $f(playerID);
+              vPlayer.addEvent('finish', playNextVideo);
+              vPlayer.api('seekTo', startTime);
+            });
+          } 
+          // if service not supported error
+          else {
+            onPlayError('Video service "'+service+'" not recognized');
+          }
+        }
+
+        function onPlayError(msg) {
+          // throw error and try next video
+          throw new Error(msg);
+          playNextVideo();
+        }
+
+        function onYTPlayerStateChange(e) {
+          // play next video when video ends
+          if (e.data === YT.PlayerState.ENDED) {
+            playNextVideo();
+          }
+        }
+
+        document.onkeydown = function(e) {
+          e = e || window.event;
+          if (e.keyCode === 39) {
+              playNextVideo();
+          }
+        };
+      </script>
+      </body>
+  </html>
