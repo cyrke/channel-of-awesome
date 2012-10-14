@@ -4,12 +4,29 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1">
         <title>Channel of Awesome</title>
         <style>
-        	body { background:#000;margin:0; padding: 0; overflow: hidden; }
+          @font-face {font-family: DINWeb;src: url("fonts/DINWeb.eot");}
+          @font-face {font-family: DINWeb;src: url("fonts/DINWeb.woff") format("woff");}
+          @font-face {font-family: DINWeb-Bold;src: url("fonts/DINWeb-Bold.eot");}
+          @font-face {font-family: DINWeb-Bold;src: url("fonts/DINWeb-Bold.woff") format("woff");}
+        	body { background:#000;margin:0; padding: 0; overflow: hidden; font-family: DINWeb, sans-serif; font-size: 18px; }
           .wrapper { width:100%; height:100%; }
           .hide { display: none; }
+          #intro { position: absolute; top: 120px; left: 30%; width: 36%; background: #111; background:rgba(0,0,0,.8); color: #fff; padding: 0 2%; cursor: pointer; }
+          h1 { font-family: DINWeb-Bold; font-weight: normal; text-transform: uppercase; }
+          small { font-style: italic;}
+          a, a:hover, a:visited { color: #999; }
+          .author { line-height: 1; }
+          .btn-close { text-decoration: none; color: #fff; position: absolute; top: 4%; right: 4%; font-size: 1.5em; font-family: DINWeb-Bold; }
         </style>
     </head>
     <body>
+      <div id="intro" onclick="document.body.removeChild(document.getElementById('intro'))">
+        <h1>Channel of Awesome</h1>
+        <p>Hit &rarr; to go to the next video.</p>
+        <p>Make your <a href="https://github.com/dfcb/channel-of-awesome">own Channel of Awesome</a>. Go to the <a href="https://github.com/dfcb/channel-of-awesome">project page</a> to&nbsp;find&nbsp;out&nbsp;more.</p>
+        <p class="author"><small>Channel of Awesome is an <a href="https://github.com/dfcb/channel-of-awesome" target="_blank">open source project</a> by <a href="http://twitter.com/johnpolacek" target="_blank">@johnpolacek</a> of the <a href="http://dfcb.github.com" target="_blank">dev group</a> at draftfcb chicago</small></p>
+        <a href="#" class="btn-close">&times;</a>
+      </div>
       <div class="wrapper">
         <div id="yt-player-contain" class="hide"></div>
         <div id="v-player-contain" class="hide"></div>
@@ -192,6 +209,8 @@
               playNextVideo();
           }
         };
+
+        setTimeout(function() {document.body.removeChild(document.getElementById('intro'))},20000);
       </script>
       </body>
   </html>
