@@ -86,9 +86,9 @@
         if (location.hash === '') {
           playlist = playlists[defaultPlaylist];
         } else if (location.hash.indexOf(',') !== -1) {
-          playlist = location.hash.split(',');
+          playlist = location.hash.substr(1).split(',');
         } else {
-          playlist = playlists[location.hash] || playlists[defaultPlaylist];
+          playlist = playlists[location.hash.substr(1)] || playlists[defaultPlaylist];
         }
         playlist.sort(function() { return 0.5 - Math.random() });
 
