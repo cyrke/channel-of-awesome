@@ -61,13 +61,13 @@
             'vimeo:31946199',
             'vimeo:46857169',
             'youtube:6vN57XseOpw',
-            'vimeo:44369414:20',
+            'vimeo:44369414',
             'youtube:HlPrOypwt-w',
             'youtube:gvd95Z6AiuM',
             'youtube:H5yT9FL-2v4',
             'youtube:YvbAqw0sk6M',
             'vimeo:47095462',
-            'vimeo:8525186:24',
+            'vimeo:8525186',
             'youtube:rZslQZ6iMgA',
             'vimeo:45417241',
             'youtube:DRRu5dKRfTU',
@@ -80,12 +80,12 @@
             'youtube:akA-B64RACU',
             'vimeo:34824490',
             'youtube:_uTJiEYI1ik',
-            'vimeo:42846180:63',
+            'vimeo:42846180',
             'youtube:_d6KuiuteIA',
             'youtube:NDqNqF15SWs',
             'vimeo:2229299',
-            'vimeo:44904580:20',
-            'vimeo:28176347:630',
+            'vimeo:44904580',
+            'vimeo:28176347',
             'youtube:O2udM5dGT-w',
             'youtube:58dsqozft3k',
             'youtube:2hASOre63Nk',
@@ -185,6 +185,18 @@
               vPlayer.addEvent('finish', playNextVideo);
               vPlayer.api('seekTo', startTime);
             });
+
+            var isPlaying = false;
+            $f(vPlayer).addEvent('playProgress', function(playerID) {
+              isPlaying = true;
+            });
+            setTimeout(function() {
+              if (!isPlaying) {
+                onPlayError('Could not play video, Vimeo ID:'+id);
+                playNextVideo();
+              }
+            }, 5000)
+
           } 
           // if service not supported error
           else {
